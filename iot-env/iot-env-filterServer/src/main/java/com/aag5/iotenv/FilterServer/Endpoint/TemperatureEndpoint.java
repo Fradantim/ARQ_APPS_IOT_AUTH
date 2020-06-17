@@ -7,13 +7,13 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.aag5.iotenv.util.JwtUtil;
 import com.aag5.iotenv.ws.AuthResponse;
 import com.aag5.iotenv.ws.TemperatureInputRequest;
 
@@ -28,6 +28,7 @@ public class TemperatureEndpoint {
 	private static final String AUTHORIZATION_HEADER = "Authorization";
 	private static final String AUTHORIZATION_HEADER_KEY = "Bearer ";
 	
+	@CrossOrigin(origins = "*")
 	@PostMapping("/temp")
 	public void post(@RequestBody TemperatureInputRequest request, @RequestHeader(AUTHORIZATION_HEADER) String authorization) {
 		logger.info("A request for setting a new temperature came: "+ request);

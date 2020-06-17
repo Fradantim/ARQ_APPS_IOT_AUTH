@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,6 +37,7 @@ public class AuthenticationEndpoint {
 		return new CollectionHolder<Device>(KNOWN_DEVICES.keySet());
 	}
 
+	@CrossOrigin(origins = "*")
 	@PostMapping("/add-auth")
 	public void post(@RequestBody AddDeviceRequest request) {
 		logger.info("A request for adding a device came.");
@@ -76,7 +78,15 @@ public class AuthenticationEndpoint {
 				String knownKey = KNOWN_DEVICES.get(requestedDevice);
 				if(knownKey!=null) {
 					logger.info("Validating..");
-					doesAuthenticate = JwtUtil.validateToken(token, knownKey);
+					try {
+						doesAuthenticate = JwtUtil.validateToken(token, knownKey);
+						if(doesAuthenticate) 
+							logger.info("Auth OK!");
+						else 
+							logger.info("Auth ERROR!");
+					} catch (Exception e) {
+						logger.error(e.getMessage(),e);
+					}
 				} else {
 					logger.info("No known public key was found ):");
 				}
@@ -88,7 +98,7 @@ public class AuthenticationEndpoint {
 			logger.error("No '"+AUTHORIZATION_HEADER_KEY+"' key found :(.");
 		}
 		
-		if(doesAuthenticate) logger.info("Auth OK!");
+		
 		
 		return new AuthResponse(doesAuthenticate);
 	}	

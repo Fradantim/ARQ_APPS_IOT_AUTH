@@ -70,16 +70,17 @@ public class JwtUtil {
     }
     
     // verify and get claims using public key
-    public static Boolean validateToken(String token, PublicKey publicKey) {
-        if(token != null && publicKey != null) {
-        	try {
-        		return !isTokenExpired(token, publicKey);
-            } catch (Exception e) { }
-        } else {
-        	return false;
-        }
-        return false;
-    }
+	public static Boolean validateToken(String token, PublicKey publicKey) {
+		if (token != null && publicKey != null) {
+			try {
+				return !isTokenExpired(token, publicKey);
+			} catch (Exception e) {
+				throw e;
+			}
+		} else {
+			return false;
+		}
+	}
     
     public static Date extractExpiration(String token, PublicKey publicKey) {
         return extractClaim(token, publicKey, Claims::getExpiration);

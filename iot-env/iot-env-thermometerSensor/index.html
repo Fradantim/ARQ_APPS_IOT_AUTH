@@ -1,0 +1,75 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="https://rawgit.com/notifyjs/notifyjs/master/dist/notify.js" crossorigin="anonymous"></script>
+
+<script src="js/main.js"></script>
+
+<!-- 4 RSA Key generation -->
+<script src="js/jsencrypt.js"></script>
+<script src="js/cryptico.min.js"></script>
+
+</head>
+<body>
+	<div align="center" >
+
+		<br>
+		<div id="titleDiv" name="titleDiv">
+			<div class="col-sm-4 col-md-8 card">
+				<h4 class="card-title text-center mb-1 mt-1">ACME&trade; THERMOMETER</h4>
+			</div>
+			<br>
+		</div>
+		
+		<div id="inputDiv" name="inputDiv">
+			<div class="col-sm-4 col-md-8 card">
+				<h4 class="card-title text-center mb-1 mt-1">Device</h4>
+				<hr>
+				<div class="form-group">
+					<div class="input-group">
+						<input name="deviceId" id="deviceId" class="form-control" placeholder="DeviceId" type="text" onchange="deviceChanged();">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="input-group">
+						<input name="passPhrase" id="passPhrase" class="form-control" placeholder="This Device Secret Pass Phrase" type="text" onchange="deviceChanged();" hidden=true>
+					</div>
+				</div>
+				<div class="form-group">
+					<h6 class="text-center">Public Key</h6>
+					<div class="input-group">
+						<!--  <input name="publicKey" id="publicKey" class="form-control" placeholder="This Device Secret Pass Phrase" type="text" disabled=true value="???"> -->
+						<textarea class="form-control rounded-0" id="publicKey" name="publicKey" rows="10" disabled=true value="???"></textarea>
+					</div>
+				</div>
+				<hr>
+				<div class="form-group">
+					<button type="button" class="btn btn-primary input-group" onclick="generateRSAKeys();">Regenerate Keys</button>
+				</div>
+				<div class="form-group">
+					<button type="button" class="btn btn-primary input-group" onclick="register();">Register to Auth Server</button>
+				</div>
+			</div>
+			<br>
+		</div>
+		
+		<div id="tempDiv" name="tempDiv">
+			<div class="col-sm-4 col-md-8 card">
+				<h4 class="card-title text-center mb-1 mt-1">Temperature</h4>
+				<hr>
+				<div class="form-group">
+					<div class="input-group">
+						<input name="temp" id="temp" class="form-control" placeholder="Temperature" type="text" disabled=true value="???">
+						<input class="custom-range" type="range" id="tempRange" name="tempRange" min="15" max="30" value="27" onchange="tempChanged();">
+					</div>
+				</div>
+			</div>
+			<br>
+		</div>		
+	</div>
+</body>
+</html>
