@@ -1,4 +1,4 @@
-package com.aag5.iotenv.AuthServer.Resource;
+package com.aag5.iotenv.AuthServer.Endpoint;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +35,11 @@ public class AuthenticationEndpoint {
 	@GetMapping("/auth")
 	public CollectionHolder<Device> get() {
 		return new CollectionHolder<Device>(KNOWN_DEVICES.keySet());
+	}
+	
+	@GetMapping("/publickey")
+	public String get(@RequestParam String deviceId) {
+		return KNOWN_DEVICES.get(new Device(deviceId));
 	}
 
 	@CrossOrigin(origins = "*")

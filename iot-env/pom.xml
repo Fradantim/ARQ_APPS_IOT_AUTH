@@ -23,6 +23,7 @@
 		<module>iot-env-heatingServer</module>
 		<module>iot-env-windowSensor</module>
 		<module>iot-env-windowActuator</module>
+		<module>iot-env-thermometerSensor</module>
 	</modules>
 
 	<properties>

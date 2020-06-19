@@ -46,9 +46,11 @@ public class TemperatureEndpoint {
 
 		HttpEntity<String> entity = new HttpEntity<>("body", headers);
 
+		logger.info("Asking auth-service if the request is valid.");
 		ResponseEntity<AuthResponse> authResponse = restTemplate.exchange("http://auth-service/auth", HttpMethod.POST, entity, AuthResponse.class);
 		
 		if(authResponse.getBody().getAuthenticates()) {
+			logger.info("Auth-service said it is!.");
 			logger.info("Validated! Answering and sending info to HeatingServer in a new thread.");
 			Runnable runnable = () -> { 
 				HttpHeaders innerheaders = new HttpHeaders();
@@ -59,6 +61,8 @@ public class TemperatureEndpoint {
 			};
 			Thread t = new Thread(runnable);
 			t.start();
+		} else {
+			logger.info("Auth-service said it isn't :( .");
 		}
 	}
 }

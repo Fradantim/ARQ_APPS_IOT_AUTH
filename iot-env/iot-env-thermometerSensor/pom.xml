@@ -7,7 +7,7 @@
 		<artifactId>iot-env</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>iot-env-authServer</artifactId>
+	<artifactId>iot-env-thermometerSensor</artifactId>
 
 	<dependencies>
 		<dependency>
@@ -16,7 +16,7 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
-	
+
 	<packaging>war</packaging>
 
 	<build>
@@ -28,5 +28,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 </project>

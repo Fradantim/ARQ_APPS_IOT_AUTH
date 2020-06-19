@@ -1,0 +1,77 @@
+<html>
+<head>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+	crossorigin="anonymous">
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+	integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+	crossorigin="anonymous"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+	integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+	crossorigin="anonymous"></script>
+<script src="https://rawgit.com/notifyjs/notifyjs/master/dist/notify.js"
+	crossorigin="anonymous"></script>
+
+<script src="js/main.js"></script>
+</head>
+<body>
+	<div align="center">
+
+		<br>
+		<div id="DevicesDiv" name="DevicesDiv">
+			<div class="col-sm-4 col-md-8 card">
+				<h4 class="card-title text-center mb-1 mt-1">Trusted Devices</h4>
+				<hr>
+				<table class="table table-sm table-responsive" id="deviceTable"
+					name="deviceTable">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col">Device Id</th>
+							<th scope="col">Device Name</th>
+							<th scope="col">Public Key</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+				<br>
+			</div>
+			<br>
+		</div>
+
+		<div id="inputDiv" name="inputDiv">
+			<div class="col-sm-4 col-md-8 card">
+				<h4 class="card-title text-center mb-1 mt-1">Register new device</h4>
+				<hr>
+				<div class="form-group">
+					<div class="input-group">
+						<input name="deviceId" id="deviceId" class="form-control" placeholder="Device ID" type="text">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="input-group">
+						<input name="deviceName" id="deviceName" class="form-control" placeholder="Device Name" type="text">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="input-group">
+						<textarea name="devicePublicKey" id="devicePublicKey" class="form-control" placeholder="Device RSA Public Key" type="text" rows="10"> </textarea>
+					</div>
+				</div>
+				<hr>
+				<div class="form-group">
+					<button type="button" class="btn btn-primary input-group"
+						onclick="register();">Register to Auth Server</button>
+				</div>
+			</div>
+			<br>
+		</div>
+	</div>
+</body>
+</html>

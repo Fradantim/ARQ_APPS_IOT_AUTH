@@ -9,10 +9,6 @@
 
 <script src="js/main.js"></script>
 
-<!-- 4 RSA Key generation -->
-<script src="js/jsencrypt.js"></script>
-<script src="js/cryptico.min.js"></script>
-
 </head>
 <body>
 	<div align="center" >
@@ -28,30 +24,39 @@
 		<div id="inputDiv" name="inputDiv">
 			<div class="col-sm-4 col-md-8 card">
 				<h4 class="card-title text-center mb-1 mt-1">Device</h4>
-				<hr>
-				<div class="form-group">
-					<div class="input-group">
-						<input name="deviceId" id="deviceId" class="form-control" placeholder="DeviceId" type="text" onchange="deviceChanged();">
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="input-group">
-						<input name="passPhrase" id="passPhrase" class="form-control" placeholder="This Device Secret Pass Phrase" type="text" onchange="deviceChanged();" hidden=true>
-					</div>
-				</div>
+
+				<table class="table">
+					<tbody>
+						<tr>
+							<td>Device ID:</td>
+							<td name="deviceId" id="deviceId"></td>
+						</tr>
+						<tr>
+							<td>Device Name:</td>
+							<td name="deviceName" id="deviceName"></td>
+						</tr>
+					</tbody>
+				</table>
+
 				<div class="form-group">
 					<h6 class="text-center">Public Key</h6>
 					<div class="input-group">
-						<!--  <input name="publicKey" id="publicKey" class="form-control" placeholder="This Device Secret Pass Phrase" type="text" disabled=true value="???"> -->
-						<textarea class="form-control rounded-0" id="publicKey" name="publicKey" rows="10" disabled=true value="???"></textarea>
+						<textarea class="form-control rounded-0" id="publicKey"
+							name="publicKey" rows="2" disabled=true>???</textarea>
 					</div>
+
 				</div>
+				<div class="form-group">
+					<h6 class="text-center">Private Key</h6>
+					<h8 class="text-center">(Don't share it!)</h8>
+					<div class="input-group">
+						<textarea class="form-control rounded-0" id="privateKey" name="privateKey" rows="4" disabled=true>???</textarea>
+					</div>				
+				</div>
+				
 				<hr>
 				<div class="form-group">
-					<button type="button" class="btn btn-primary input-group" onclick="generateRSAKeys();">Regenerate Keys</button>
-				</div>
-				<div class="form-group">
-					<button type="button" class="btn btn-primary input-group" onclick="register();">Register to Auth Server</button>
+					<button type="button" class="btn btn-primary input-group" onclick="generateKeys();">Regenerate Keys</button>
 				</div>
 			</div>
 			<br>

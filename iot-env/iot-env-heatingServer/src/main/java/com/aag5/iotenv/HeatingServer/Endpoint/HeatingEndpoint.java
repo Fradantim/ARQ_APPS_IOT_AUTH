@@ -1,11 +1,8 @@
 package com.aag5.iotenv.HeatingServer.Endpoint;
 
-import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
+import java.security.spec.InvalidKeySpecException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.aag5.iotenv.model.Device;
+import com.aag5.iotenv.HeatingServer.HeatingServerApplication;
 import com.aag5.iotenv.util.JwtUtil;
-import com.aag5.iotenv.ws.AddDeviceRequest;
 import com.aag5.iotenv.ws.TemperatureInputRequest;
 import com.aag5.iotenv.ws.WindowsStatus;
 
@@ -40,8 +36,6 @@ public class HeatingEndpoint {
 
 	private static Logger logger = LoggerFactory.getLogger(HeatingEndpoint.class);
 	
-	private static Boolean first=true;
-	private static Device device=null;
 	private static PrivateKey privateKey=null;
 	private static final Integer OPENING_DELTA=26;
 	private static final Integer CLOSING_DELTA=20;
@@ -53,26 +47,13 @@ public class HeatingEndpoint {
 	public void post(@RequestBody TemperatureInputRequest request) {
 		try {
 			logger.info("A request for setting a new temperature came: "+ request);
-			if(first) {
-				privateKey = JwtUtil.generatePrivateKey(privateKeyB64);
-				
-				device= new Device(serviceName);
-				logger.info("First execution, must register Device me");
-				
-				AddDeviceRequest addDeviceRequest = new AddDeviceRequest(device, publicKeyB64);
-				
-				logger.info("Adding new authorizable");
-				restTemplate.postForObject("http://auth-service/add-auth", addDeviceRequest, String.class);
-				
-				first=false;
-			}
-		
+
 			Integer temp = request.getTemp();
 			
 			logger.info("Getting window status.");
 			HttpHeaders headers = new HttpHeaders();
 			
-			headers.setBearerAuth(JwtUtil.generateToken(device, privateKey));
+			headers.setBearerAuth(JwtUtil.generateToken(HeatingServerApplication.device, getPrivateKey()));
 			HttpEntity<String> entity = new HttpEntity<>("body", headers);
 			ResponseEntity<String> windowStatus = restTemplate.exchange("http://window-sensor/status", HttpMethod.GET, entity, String.class);
 			logger.info("Status gotten: "+windowStatus.getBody());
@@ -93,7 +74,7 @@ public class HeatingEndpoint {
 			if(newStatus != null) {
 				logger.info("Sending new status: "+newStatus);
 				headers = new HttpHeaders();
-				headers.setBearerAuth(JwtUtil.generateToken(device, privateKey));
+				headers.setBearerAuth(JwtUtil.generateToken(HeatingServerApplication.device, getPrivateKey()));
 				entity = new HttpEntity<>(newStatus, headers);				
 				restTemplate.exchange("http://window-actuator/status", HttpMethod.POST, entity, String.class);
 				logger.info("DONE!");
@@ -104,5 +85,12 @@ public class HeatingEndpoint {
 		} catch (Exception e) {
 			logger.error("Oops! ", e);
 		}
+	}
+	
+	private PrivateKey getPrivateKey() throws NoSuchAlgorithmException, InvalidKeySpecException {
+		if(privateKey == null) {
+			privateKey = JwtUtil.generatePrivateKey(privateKeyB64);
+		}
+		return privateKey;
 	}
 }

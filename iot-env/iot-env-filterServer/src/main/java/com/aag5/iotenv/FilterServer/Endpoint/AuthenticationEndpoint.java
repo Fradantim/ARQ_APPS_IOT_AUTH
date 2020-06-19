@@ -40,7 +40,14 @@ public class AuthenticationEndpoint {
 
 		HttpEntity<String> entity = new HttpEntity<>("body", headers);
 
+		logger.info("Asking auth-service if the request is valid.");
 		ResponseEntity<AuthResponse> authResponse = restTemplate.exchange("http://auth-service/auth", HttpMethod.POST, entity, AuthResponse.class);
+		
+		if(authResponse.getBody().getAuthenticates()) {
+			logger.info("Auth-service said it is!.");
+		} else {
+			logger.info("Auth-service said it isn't :( .");
+		}
 		
 		return authResponse.getBody();
 	}	

@@ -1,6 +1,8 @@
 package com.aag5.iotenv.util;
 
 import java.security.KeyFactory;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -100,5 +102,33 @@ public class JwtUtil {
     
     public static String getDeviceId(String token) {
     	return Jwts.parser().parseClaimsJwt(token.substring(0,token.lastIndexOf(".")+1)).getBody().getSubject();
+    }
+    
+    /**
+     * Get RSA keys. Uses key size of 2048. <br>
+     * <br>
+     * (java.security) <br>
+     * PublicKey publicKey = (PublicKey) rsaKeys.get("public"); <br>
+     * PrivateKey privateKey = (PrivateKey) rsaKeys.get("private"); <br>
+     * <br>
+     * String publicKeyB64 = (String) rsaKeys.get("publicB64"); <br>
+     * String privateKeyB64 = (String) rsaKeys.get("privateB64"); <br>
+     * @throws NoSuchAlgorithmException 
+     * 
+     */
+    public static Map<String, Object> getRSAKeys() throws NoSuchAlgorithmException  {
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(ALGORITHM.getFamilyName());
+        keyPairGenerator.initialize(2048);
+        KeyPair keyPair = keyPairGenerator.generateKeyPair();
+        PrivateKey privateKey = keyPair.getPrivate();
+        PublicKey publicKey = keyPair.getPublic();
+        Map<String, Object> keys = new HashMap<String, Object>();
+        keys.put("private", privateKey);
+        keys.put("public", publicKey);
+        
+        keys.put("privateB64", Base64.getEncoder().encodeToString(privateKey.getEncoded()));
+        keys.put("publicB64", Base64.getEncoder().encodeToString(publicKey.getEncoded()));
+
+        return keys;
     }
 }

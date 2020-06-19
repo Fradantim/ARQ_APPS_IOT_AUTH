@@ -1,11 +1,13 @@
-package com.aag5.iotenv.HeatingServer;
+package com.aag5.iotenv.ThermometerSensor;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,23 +18,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
 import com.aag5.iotenv.model.Device;
-import com.aag5.iotenv.ws.AddDeviceRequest;
+import com.aag5.iotenv.util.JwtUtil;
 
 @SpringBootApplication
 @EnableEurekaClient
-public class HeatingServerApplication implements CommandLineRunner {
+public class ThermometerSensorApplication implements CommandLineRunner {
 	
 	@Value("${spring.application.name}")
 	private String serviceName;
 	
-	@Value("${public.key}")
-	private String publicKeyB64;
-	
-	@Autowired
-	private RestTemplate restTemplate;
-
 	public static void main(String[] args) {
-		SpringApplication.run(HeatingServerApplication.class, args);
+		SpringApplication.run(ThermometerSensorApplication.class, args);
 	}
 
 	// Create a Bean to let Spring FrameWork handle it's instances
@@ -47,36 +43,34 @@ public class HeatingServerApplication implements CommandLineRunner {
 		return new RestTemplate();
 	}
 	
-	private static Logger logger = LoggerFactory.getLogger(HeatingServerApplication.class);
+	private static Logger logger = LoggerFactory.getLogger(ThermometerSensorApplication.class);
 
 	public static Device device;
 	
+	public static PrivateKey privateKey;
+	public static String privateKeyB64;
+	public static PublicKey publicKey;
+	public static String publicKeyB64;
+	
 	@Override
 	public void run(String... args) throws Exception {
-		logger.info("Starting HeatingServer.");
-		logger.info("Registering itself on the auth-server.");
+		logger.info("Starting ThermometerSensor.");
 		
 		device= new Device(UUID.randomUUID().toString(), serviceName);
 		
-		logger.info("First execution, must register Device me");
-			
-		AddDeviceRequest addDeviceRequest = new AddDeviceRequest(device, publicKeyB64);
+		regenerateKeys();
+	}
+	
+	public static void regenerateKeys() throws NoSuchAlgorithmException {
+		logger.info("Regenerating keys...");
 		
-		boolean registered = false;
-				
-		while (!registered) {
-			try {
-				restTemplate.postForObject("http://auth-service/add-auth", addDeviceRequest, String.class);
-				registered=true;
-			} catch (Exception e) {
-				logger.error("Oops error when trying to register "+e.getMessage());
-				logger.info("Will try again in 10 seconds.");
-				TimeUnit.SECONDS.sleep(10);
-			}
-			
-		}		
+		Map<String, Object> keys=JwtUtil.getRSAKeys();
 		
-		logger.info("Registering DONE!.");
-			
+		privateKey = (PrivateKey) keys.get("private");
+		publicKey = (PublicKey) keys.get("public");
+		privateKeyB64 = (String) keys.get("privateB64");
+		publicKeyB64 = (String) keys.get("publicB64");
+		
+		logger.info("Regeneration DONE!.");
 	}
 }
