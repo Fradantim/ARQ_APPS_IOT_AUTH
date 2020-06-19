@@ -63,6 +63,7 @@ public class TemperatureEndpoint {
 			t.start();
 		} else {
 			logger.info("Auth-service said it isn't :( .");
+			throw new IllegalArgumentException();
 		}
 	}
 }
