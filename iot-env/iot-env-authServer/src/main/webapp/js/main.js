@@ -10,9 +10,18 @@ window.onload = function wakeUp() {
 function addRow(id, name, publicKey){
 	var table = document.getElementById("deviceTable");
 	var row = table.insertRow(-1);
-	row.insertCell(0).innerHTML = id;
-	row.insertCell(1).innerHTML = name;
-	row.insertCell(2).innerHTML = publicKey;	
+	
+	var newCell = row.insertCell(0);
+	newCell.innerHTML = id;
+	newCell.className = 'text-nowrap';
+	
+	newCell = row.insertCell(1);
+	newCell.innerHTML = name;
+	newCell.className = 'text-nowrap';
+	
+	newCell = row.insertCell(2);
+	newCell.innerHTML = publicKey;
+	newCell.className = 'text-nowrap';
 }
 
 function emptyTable(){

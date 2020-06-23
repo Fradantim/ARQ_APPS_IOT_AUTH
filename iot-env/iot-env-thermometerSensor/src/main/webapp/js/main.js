@@ -7,6 +7,23 @@ window.onload = function wakeUp() {
 	fillKeysInfo(getKeys());
 }
 
+function copyText(elementID) {
+	/* Get the text field */
+	var str = $('#'+elementID).text();
+
+	const el = document.createElement('textarea');
+	el.value = str;
+	document.body.appendChild(el);
+	el.select();
+	document.execCommand('copy');
+	document.body.removeChild(el);
+	console.log("'"+elementID+"' value copied: '"+str+"'")
+	$.notify("'" + elementID + "' text copied.", "info");
+}
+
+
+
+
 function getDevice(){
 	console.log("Asking for device id");
 	var theResult="notReady";

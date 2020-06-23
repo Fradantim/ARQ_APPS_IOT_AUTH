@@ -27,19 +27,22 @@
 
 				<table class="table">
 					<tbody>
-						<tr>
+						<tr onclick="copyText('deviceId');">
 							<td>Device ID:</td>
 							<td name="deviceId" id="deviceId"></td>
+							<td>(Click row to copy)</td>
 						</tr>
-						<tr>
+						<tr onclick="copyText('deviceName');">
 							<td>Device Name:</td>
 							<td name="deviceName" id="deviceName"></td>
+							<td>(Click row to copy)</td>
 						</tr>
 					</tbody>
 				</table>
 
-				<div class="form-group">
+				<div class="form-group" onclick="copyText('publicKey');">
 					<h6 class="text-center">Public Key</h6>
+					(Click to copy)
 					<div class="input-group">
 						<textarea class="form-control rounded-0" id="publicKey"
 							name="publicKey" rows="2" disabled=true>???</textarea>
@@ -48,7 +51,7 @@
 				</div>
 				<div class="form-group">
 					<h6 class="text-center">Private Key</h6>
-					<h8 class="text-center">(Don't share it!)</h8>
+					(Don't share it!)
 					<div class="input-group">
 						<textarea class="form-control rounded-0" id="privateKey" name="privateKey" rows="4" disabled=true>???</textarea>
 					</div>				
